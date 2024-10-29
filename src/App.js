@@ -3,6 +3,7 @@ import { Route, Routes, Link } from 'react-router-dom';
 import Counter from './components/Counter';
 import TodoList from './components/TodoList';
 import Greeting from './components/Greeting';
+import { useState } from 'react';
 
 function Home() {
   return (
@@ -14,9 +15,16 @@ function Home() {
 }
 
 function App() {
+  const [name, setName] = useState("Beans");
+
   return (
     <div className="App">
     <header className="App-header">
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
 
       <nav>
         <ul>
@@ -31,7 +39,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/counter" element={<Counter />} />
       <Route path="/todo" element={<TodoList />} />
-      <Route path="/greeting" element={<Greeting />} />
+      <Route path="/greeting" element={<Greeting name={name}/>} />
     </Routes>
 
   </div>
