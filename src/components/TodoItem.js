@@ -1,11 +1,15 @@
-//TodoItem is a functional component It will display the text of the todo and it will have a button that will remove the todo from the list.
 import React from "react";
 
-function TodoItem({ todo, index, handleRemove }) {
+function TodoItem({ todo, index, handleComplete, handleRemove }) {
   return (
     <li>
       {todo}
-      <button onClick={() => handleRemove(index)}>Remove</button>
+      {/* conditionally rendering either handle complete or handle remove. */}
+      {handleComplete ? (
+        <button onClick={() => handleComplete(index)}>Complete</button>
+      ) : (
+        <button onClick={() => handleRemove(index)}>Remove</button>
+      )}
     </li>
   );
 }
