@@ -1,0 +1,58 @@
+/* Navbar.css */
+
+/* Navbar container */
+
+/* Wrapper box around the navbar */
+.navbar-wrapper {
+  width: 100%;
+  background-color: #222; /* Darker shade for the wrapper box */
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Navbar content */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between 'Home' and other links */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  color: #f0f0f0;
+}
+
+/* Home link styling */
+.navbar .home-link {
+  color: #f0f0f0;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Navbar link container */
+.navbar ul {
+  display: flex;
+  gap: 20px;
+  list-style-type: none; /* Removes bullets */
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar link styling */
+.navbar a {
+  color: #f0f0f0;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 8px 12px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for links */
+.navbar a:hover {
+  background-color: #555;
+  color: #ffffff;
+}
