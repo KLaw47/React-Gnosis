@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/Contact.css';
 
 function Contact() {
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   });
+  const [status, setStatus] = useState('')
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,12 +17,35 @@ function Contact() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatus('Sending...');
+
     console.log("Form submitted", formData);
-    // send formdata to backend, nodemailer?
-    setFormData({ name: '', email: '', message: '' }); // Reset form after submission
+
+    try {
+      const response = await fetch('http://localhost:5000/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setStatus('Message sent successfully!');
+      } else {
+        setStatus('Failed to send message. Please try again later.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setStatus('Failed to send message. Please try again later.');
+    }
+
+    // Clear form after submission
+    setFormData({ name: '', email: '', message: '' });
   };
+
   return (
     <div className="contact">
       <h2>Contact Me</h2>
@@ -57,6 +81,7 @@ function Contact() {
           />
         </label>
         <button type="submit">Send Message</button>
+        <p>{status}</p> {/* Displays status message */}
       </form>
     </div>
   );

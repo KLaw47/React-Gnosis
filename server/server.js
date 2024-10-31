@@ -1,9 +1,14 @@
+require('dotenv').config();
 const express = require('express');
-const nodemailer = require('nodemailer');
-const app = express();
-const PORT = process.env.PORT || 5000;
+const cors = require('cors');
+const transporter = require('./mailer');
 
-app.use(express.json()); // Middleware to parse JSON data
+const app = express();
+const PORT = process.env.BACKEND_PORT || 5000;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
 
 //basic route to test server
 app.get('/', (req, res) => {
@@ -14,25 +19,17 @@ app.get('/', (req, res) => {
 app.post('/send-email', async (req, res) => {
   const { name, email, message } = req.body;
 
-  // Set up Nodemailer transport (using Gmail as an example)
-  let transporter = nodemailer.createTransport({
-    service: 'gmail', // Use a different email service if needed
-    auth: {
-      user: process.env.EMAIL_USER, // Add your email to environment variables
-      pass: process.env.EMAIL_PASS, // Add your email password to environment variables
-    },
-  });
-
   // Define email options
-  let mailOptions = {
-    from: email, // The user's email (from the form)
-    to: process.env.EMAIL_USER, // Your email to receive messages
-    subject: `New message from ${name}`,
-    text: message,
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_USER,    // Your email to receive messages
+    replyTo: email,
+    subject: `New message from ${name}`, // Include user's name in the subject
+    text: `Message from ${name} (${email}):\n\n${message}`, // Format the body with user's info and message
   };
 
   try {
-    // Send email
+    // Send email using the configured transporter
     await transporter.sendMail(mailOptions);
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
@@ -40,6 +37,7 @@ app.post('/send-email', async (req, res) => {
     res.status(500).json({ message: 'Error sending email' });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
